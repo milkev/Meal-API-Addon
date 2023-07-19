@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "mealapiaddon",
+  "version": "${version}",
+
+  "name": "Meal API Addon",
+  "description": "This mod makes it so any food that overfills the players saturation, puts the rest into meal API's fullness bar.",
+  "authors": [
+    "Milkev"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": "https://github.com/milkev/"
+  },
+
+  "license": "CUSTOM LICENSE",
+  "icon": "assets/mealapiaddon/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.milkev.mealapiaddon.common.MealApiAddon"
+    ],
+    "client": [
+    ]
+  },
+  "mixins": [
+    "mealapiaddon.Mixin.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.8",
+    "fabric": "*",
+    "fabric-key-binding-api-v1": "*",
+    "minecraft": "1.20.x"
+  },
+  "suggests": {
+  }
+}

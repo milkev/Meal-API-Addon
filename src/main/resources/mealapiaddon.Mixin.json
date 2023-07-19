@@ -1,0 +1,14 @@
+
+{
+  "required": true,
+  "package": "net.milkev.mealapiaddon.common.mixins",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+    "MealApiAddonMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
