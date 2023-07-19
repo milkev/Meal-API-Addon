@@ -21,7 +21,7 @@ public class MealApiAddonMixin {
 
         //Reference;
         //Max hunger = 20
-        //Max saturation = 40
+        //Max saturation = 20
 
         if(!world.isClient) {
             PlayerEntity thisO = ((PlayerEntity) (Object) this);
@@ -30,11 +30,20 @@ public class MealApiAddonMixin {
             FoodComponent thisFood = itemStack.getItem().getFoodComponent();
 
             if (thisHunger.getFoodLevel() + thisFood.getHunger() >= 20) {
-                float totalSaturation = thisHunger.getSaturationLevel() + thisFood.getSaturationModifier() * (float)40;
-                if (totalSaturation > (float)40) {
-                    //no, i dont know why its 39.5... from my tests, this simply resulted in getting the correct saturation amount after overflowing into fullness & healing
-                    totalSaturation = totalSaturation - (float)39.5;
+
+                float totalSaturation = thisHunger.getSaturationLevel() + thisFood.getSaturationModifier() * thisFood.getHunger() * 2;
+
+                //System.out.println("Saturation total is: " + totalSaturation);
+                //System.out.println("Saturation modifier of eaten food: " + thisFood.getSaturationModifier());
+
+                if (totalSaturation > (float)20) {
+
+                    //System.out.println("Saturation overflowed, total: " + totalSaturation);
+
+                    totalSaturation = totalSaturation - (float)20;
+
                     //System.out.println("Overflowing " + totalSaturation + " Saturation into meal api fullness!");
+
                     PlayerFullnessUtil.instance().setPlayerFullness(thisServerPlayer,
                             PlayerFullnessUtil.instance().getPlayerFullness(thisServerPlayer) + Math.round(totalSaturation));
                 }

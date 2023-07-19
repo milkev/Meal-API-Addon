@@ -10,7 +10,7 @@
   ],
   "contact": {
     "homepage": "",
-    "sources": "https://github.com/milkev/"
+    "sources": "https://github.com/milkev/Meal-API-Addon"
   },
 
   "license": "CUSTOM LICENSE",
@@ -32,6 +32,7 @@
     "fabricloader": ">=0.14.8",
     "fabric": "*",
     "fabric-key-binding-api-v1": "*",
+    "mealapi": ">=0.3.2",
     "minecraft": "1.20.x"
   },
   "suggests": {
