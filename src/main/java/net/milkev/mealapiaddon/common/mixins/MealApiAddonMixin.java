@@ -5,7 +5,9 @@ import net.minecraft.entity.player.HungerManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.FoodComponent;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -23,31 +25,38 @@ public class MealApiAddonMixin {
         //Max hunger = 20
         //Max saturation = 20
 
-        if(!world.isClient) {
-            PlayerEntity thisO = ((PlayerEntity) (Object) this);
-            ServerPlayerEntity thisServerPlayer = (ServerPlayerEntity) thisO;
-            HungerManager thisHunger = thisO.getHungerManager();
-            FoodComponent thisFood = itemStack.getItem().getFoodComponent();
+            if (!world.isClient) {
 
-            if (thisHunger.getFoodLevel() + thisFood.getHunger() >= 20) {
+                PlayerEntity thisO = ((PlayerEntity) (Object) this);
+                ServerPlayerEntity thisServerPlayer = (ServerPlayerEntity) thisO;
 
-                float totalSaturation = thisHunger.getSaturationLevel() + thisFood.getSaturationModifier() * thisFood.getHunger() * 2;
+                if(!thisServerPlayer.getStackInHand(thisServerPlayer.getActiveHand()).getRegistryEntry().getKey().get().getValue().toString().equals("sandwichable:sandwich")) {
 
-                //System.out.println("Saturation total is: " + totalSaturation);
-                //System.out.println("Saturation modifier of eaten food: " + thisFood.getSaturationModifier());
+                    HungerManager thisHunger = thisO.getHungerManager();
+                    FoodComponent thisFood = itemStack.getItem().getFoodComponent();
 
-                if (totalSaturation > (float)20) {
+                    if (thisHunger.getFoodLevel() + thisFood.getHunger() >= 20) {
 
-                    //System.out.println("Saturation overflowed, total: " + totalSaturation);
+                        float totalSaturation = thisHunger.getSaturationLevel() + thisFood.getSaturationModifier() * thisFood.getHunger() * 2;
 
-                    totalSaturation = totalSaturation - (float)20;
+                        //System.out.println("Saturation total is: " + totalSaturation);
+                        //System.out.println("Saturation modifier of eaten food: " + thisFood.getSaturationModifier());
 
-                    //System.out.println("Overflowing " + totalSaturation + " Saturation into meal api fullness!");
+                        if (totalSaturation > (float) 20) {
 
-                    PlayerFullnessUtil.instance().setPlayerFullness(thisServerPlayer,
-                            PlayerFullnessUtil.instance().getPlayerFullness(thisServerPlayer) + Math.round(totalSaturation));
+                            //System.out.println("Saturation overflowed, total: " + totalSaturation);
+
+                            totalSaturation = totalSaturation - (float) 20;
+
+                            //System.out.println("Overflowing " + totalSaturation + " Saturation into meal api fullness!");
+
+                            PlayerFullnessUtil.instance().setPlayerFullness(thisServerPlayer,
+                                    PlayerFullnessUtil.instance().getPlayerFullness(thisServerPlayer) + Math.round(totalSaturation));
+                        }
+                    }
+                } else {
+                    //System.out.println("Not applying Meal API Addon logic to sandwich as sandwichable has its own logic");
                 }
             }
-        }
     }
 }
